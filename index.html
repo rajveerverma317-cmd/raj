@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apna Game Zone | Play Fun Games</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .main {
+            max-width: 1200px;
+            margin: 80px auto 0;
+            padding: 2rem;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .game-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .game-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        
+        .play-btn {
+            display: inline-block;
+            background: #ff6b6b;
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            margin-top: 1rem;
+            transition: background 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .play-btn:hover {
+            background: #ff5252;
+        }
+        
+        .auth-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            max-width: 400px;
+            margin: 2rem auto;
+            text-align: center;
+        }
+        
+        .auth-input {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .auth-btn {
+            background: #4ecdc4;
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0.5rem;
+            transition: background 0.3s;
+        }
+        
+        .auth-btn:hover {
+            background: #45b7aa;
+        }
+        
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+        }
+        
+        .stats-table td {
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .stats-table tr:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        footer {
+            background: rgba(0, 0, 0, 0.3);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 1rem;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+        
+        .footer-links a:hover {
+            opacity: 1;
+        }
+        
+        /* Game Sections */
+        .game-area {
+            display: none;
+            margin: 2rem 0;
+        }
+        
+        .game-area.active {
+            display: block;
+        }
+        
+        #guessGame {
+            text-align: center;
+        }
+        
+        #gameMessage {
+            margin: 1rem 0;
+            min-height: 2rem;
+        }
+        
+        .number-input {
+            padding: 0.5rem;
+            font-size: 1.2rem;
+            width: 100px;
+            text-align: center;
+            margin: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/" class="logo">🎮 Apna Game Zone</a>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#games">Games</a>
+                <a href="#login">Login</a>
+                <a href="#register">Register</a>
+            </div>
+        </nav>
+    </header>
+    
+    <main class="main">
+        <section id="home">
+            <h1>Welcome to Apna Game Zone</h1>
+            
+            <div class="games-grid">
+                <div class="game-card">
+                    <div class="game-icon">🎯</div>
+                    <h3>Number Guessing</h3>
+                    <p>Guess the number between 1-100</p>
+                    <button class="play-btn" onclick="showGame('guess')">Play Now</button>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-icon">✂️</div>
+                    <h3>Rock Paper Scissors</h3>
+                    <p>Play against computer</p>
+                    <button class="play-btn" onclick="showGame('rps')">Play Now</button>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-icon">🎲</div>
+                    <h3>Dice Roll</h3>
+                    <p>Roll the dice and test luck</p>
+                    <button class="play-btn" onclick="showGame('dice')">Play Now</button>
+                </div>
+            </div>
+            
+            <table class="stats-table">
+                <tr>
+                    <td>Total Players</td>
+                    <td>10,000+</td>
+                </tr>
+                <tr>
+                    <td>Games Played</td>
+                    <td>50,000+</td>
+                </tr>
+                <tr>
+                    <td>Active Now</td>
+                    <td>500+</td>
+                </tr>
+                <tr>
+                    <td>Win Rate</td>
+                    <td>65%</td>
+                </tr>
+            </table>
+        </section>
+        
+        <!-- Login/Register Section -->
+        <section id="auth" class="auth-section">
+            <h2 id="authTitle">Login</h2>
+            <input type="text" id="username" class="auth-input" placeholder="Username">
+            <input type="password" id="password" class="auth-input" placeholder="Password">
+            <div>
+                <button class="auth-btn" onclick="handleLogin()">Login</button>
+                <button class="auth-btn" onclick="handleRegister()">Register</button>
+            </div>
+        </section>
+        
+        <!-- Game Areas -->
+        <section id="guessGame" class="game-area">
+            <h2>Number Guessing Game</h2>
+            <div id="gameMessage"></div>
+            <input type="number" id="guessInput" class="number-input" min="1" max="100">
+            <button class="play-btn" onclick="checkGuess()">Guess</button>
+            <button class="play-btn" onclick="resetGame()">New Game</button>
+        </section>
+        
+        <section id="rpsGame" class="game-area">
+            <h2>Rock Paper Scissors</h2>
+            <div id="rpsMessage"></div>
+            <button class="play-btn" onclick="playRPS('rock')">🪨 Rock</button>
+            <button class="play-btn" onclick="playRPS('paper')">📄 Paper</button>
+            <button class="play-btn" onclick="playRPS('scissors')">✂️ Scissors</button>
+        </section>
+        
+        <section id="diceGame" class="game-area">
+            <h2>Dice Roll Game</h2>
+            <div id="diceMessage"></div>
+            <div id="diceResult" style="font-size: 4rem; margin: 1rem;">⚀</div>
+            <button class="play-btn" onclick="rollDice()">Roll Dice</button>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="footer-links">
+            <a href="#">About Us</a>
+            <a href="#">Contact</a>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+        </div>
+        <div style="margin-top: 1rem;">
+            Copyright © 2026 Apna Game Zone
+        </div>
+    </footer>
+    
+    <script>
+        // Game Variables
+        let secretNumber = Math.floor(Math.random() * 100) + 1;
+        let attempts = 0;
+        
+        // Show different games
+        function showGame(game) {
+            document.querySelectorAll('.game-area').forEach(area => {
+                area.classList.remove('active');
+            });
+            document.getElementById(game + 'Game').classList.add('active');
+        }
+        
+        // Number Guessing Game
+        function checkGuess() {
+            const guess = parseInt(document.getElementById('guessInput').value);
+            const message = document.getElementById('gameMessage');
+            attempts++;
+            
+            if (isNaN(guess) || guess < 1 || guess > 100) {
+                message.innerHTML = '❌ Please enter a number between 1-100';
+                return;
+            }
+            
+            if (guess === secretNumber) {
+                message.innerHTML = `🎉 Correct! You got it in ${attempts} attempts!`;
+                message.style.color = '#4ecdc4';
+            } else if (guess < secretNumber) {
+                message.innerHTML = '📈 Too low! Try higher';
+                message.style.color = '#ff6b6b';
+            } else {
+                message.innerHTML = '📉 Too high! Try lower';
+                message.style.color = '#ff6b6b';
+            }
+        }
+        
+        function resetGame() {
+            secretNumber = Math.floor(Math.random() * 100) + 1;
+            attempts = 0;
+            document.getElementById('guessInput').value = '';
+            document.getElementById('gameMessage').innerHTML = 'New game started! Guess a number';
+            document.getElementById('gameMessage').style.color = 'white';
+        }
+        
+        // Rock Paper Scissors
+        function playRPS(playerChoice) {
+            const choices = ['rock', 'paper', 'scissors'];
+            const computerChoice = choices[Math.floor(Math.random() * 3)];
+            const message = document.getElementById('rpsMessage');
+            
+            let result = '';
+            if (playerChoice === computerChoice) {
+                result = '🤝 Tie!';
+            } else if (
+                (playerChoice === 'rock' && computerChoice === 'scissors') ||
+                (playerChoice === 'paper' && computerChoice === 'rock') ||
+                (playerChoice === 'scissors' && computerChoice === 'paper')
+            ) {
+                result = '🎉 You Win!';
+            } else {
+                result = '💻 Computer Wins!';
+            }
+            
+            message.innerHTML = `You chose ${playerChoice}, Computer chose ${computerChoice}. ${result}`;
+        }
+        
+        // Dice Game
+        function rollDice() {
+            const dice = Math.floor(Math.random() * 6) + 1;
+            const diceFaces = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+            document.getElementById('diceResult').innerHTML = diceFaces[dice-1];
+            document.getElementById('diceMessage').innerHTML = `You rolled a ${dice}!`;
+        }
+        
+        // Auth Functions
+        function handleLogin() {
+            const username = document.getElementById('username').value;
+            if (username) {
+                alert(`Welcome back, ${username}!`);
+            } else {
+                alert('Please enter username');
+            }
+        }
+        
+        function handleRegister() {
+            const username = document.getElementById('username').value;
+            if (username) {
+                alert(`Registration successful! Welcome ${username}`);
+            } else {
+                alert('Please enter username');
+            }
+        }
+    </script>
+</body>
+</html>
